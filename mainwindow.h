@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QDebug>
 
 namespace Ui {
   class MainWindow;
@@ -17,6 +18,9 @@ public:
 
 private:
   Ui::MainWindow *ui;
+
+private slots:
+    void slotParseProtocol() const;
 };
 
 #endif // MAINWINDOW_H

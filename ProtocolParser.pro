@@ -26,10 +26,12 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+        protocolpase.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+        protocolpase.h
 
 FORMS += \
         mainwindow.ui
