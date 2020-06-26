@@ -33,11 +33,6 @@ QList<QStringList> ProtocolPaseFFJAA19::Parse(QString strProtocol)
 {
   QList<QStringList> strArray;
   qDebug() << "Parse AA19: " << strProtocol;
-  QStringList strList;
-  strList << QString::fromLocal8Bit("HEAD") << QString::fromLocal8Bit("报文头") << QString::fromLocal8Bit("4") << strProtocol.mid(0, 4);
-  strArray << strList;
-
-
 
   return strArray;
 }

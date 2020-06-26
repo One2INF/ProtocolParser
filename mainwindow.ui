@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>669</width>
-    <height>445</height>
+    <width>701</width>
+    <height>553</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,6 +15,60 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
+    <item row="3" column="2">
+     <widget class="QLineEdit" name="lineEdit">
+      <property name="text">
+       <string>AA19990157100000100000005202006161000261045000000130000000000019AA</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2" colspan="2">
+     <widget class="QTableView" name="tableView"/>
+    </item>
+    <item row="3" column="1">
+     <widget class="QPushButton" name="DeleteButton">
+      <property name="minimumSize">
+       <size>
+        <width>60</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>60</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="baseSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Add</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QPushButton" name="AddButton">
+      <property name="minimumSize">
+       <size>
+        <width>60</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>60</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Delete</string>
+      </property>
+     </widget>
+    </item>
     <item row="0" column="0" rowspan="3" colspan="2">
      <widget class="QListWidget" name="listWidget">
       <item>
@@ -49,25 +103,6 @@
       </item>
      </widget>
     </item>
-    <item row="3" column="0">
-     <widget class="QPushButton" name="AddButton">
-      <property name="minimumSize">
-       <size>
-        <width>60</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>60</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Delete</string>
-      </property>
-     </widget>
-    </item>
     <item row="3" column="3">
      <widget class="QPushButton" name="DoButton">
       <property name="minimumSize">
@@ -87,37 +122,6 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="1">
-     <widget class="QPushButton" name="DeleteButton">
-      <property name="minimumSize">
-       <size>
-        <width>60</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>60</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="baseSize">
-       <size>
-        <width>0</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Add</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="2" colspan="2">
-     <widget class="QTableView" name="tableView"/>
-    </item>
-    <item row="3" column="2">
-     <widget class="QLineEdit" name="lineEdit"/>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -125,10 +129,33 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>669</width>
+     <width>701</width>
      <height>23</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <widget class="QMenu" name="menuProtocolParseer">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <property name="toolTipsVisible">
+     <bool>true</bool>
+    </property>
+    <addaction name="actionCheckJson"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <property name="toolTipsVisible">
+     <bool>true</bool>
+    </property>
+    <addaction name="actionAbout"/>
+   </widget>
+   <addaction name="menuProtocolParseer"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -139,6 +166,28 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionCheckJson">
+   <property name="text">
+    <string>Check JSON</string>
+   </property>
+   <property name="toolTip">
+    <string>Check JSON</string>
+   </property>
+   <property name="statusTip">
+    <string>Choose a JSON file to be checked！</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+   <property name="toolTip">
+    <string>About</string>
+   </property>
+   <property name="statusTip">
+    <string>Show details about me</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

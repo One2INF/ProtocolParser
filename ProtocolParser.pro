@@ -27,11 +27,13 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-        protocolpase.cpp
+        protocolpase.cpp \
+        szj_qjson.cpp
 
 HEADERS += \
         mainwindow.h \
-        protocolpase.h
+        protocolpase.h \
+        szj_qjson.h
 
 FORMS += \
         mainwindow.ui
