@@ -8,6 +8,12 @@ SZJ_QJson::SZJ_QJson()
   cm_model = new QStandardItemModel();
 }
 
+SZJ_QJson::~SZJ_QJson()
+{
+  if(cm_model != nullptr)
+    delete cm_model;
+}
+
 QJsonValue SZJ_QJson::openJsonFile(QString strJsonFilePath)
 {
   QFile jsonFile(strJsonFilePath);
@@ -135,10 +141,8 @@ void SZJ_QJson::createJsonItem(const QJsonValue& cjsonValue, QStandardItem* pare
 
 void SZJ_QJson::showJsonByTreeview(const QJsonValue& jsonValue, QTreeView* treeView)
 {
-  QStandardItemModel* model = new QStandardItemModel();
-  QStandardItem* rootItem = new QStandardItem("root");
-  createJsonItem(jsonValue, rootItem);
-
-  model->appendRow(rootItem);
-  treeView->setModel(model);
+  QStandardItem* cm_rootItem = new QStandardItem("root");
+  createJsonItem(jsonValue, cm_rootItem);
+  cm_model->appendRow(cm_rootItem);
+  treeView->setModel(cm_model);
 }

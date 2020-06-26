@@ -1,6 +1,8 @@
 ﻿#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "szj_qjson.h"
+
 #include <QMainWindow>
 #include <QDebug>
 #include <QStandardItemModel>
@@ -23,7 +25,8 @@ private:
   QStandardItem *qstdmodel;
   QMenu *fileMenu;
   QString cm_strDefaultOpenPath;
-  QTreeView *view;
+  QTreeView* cm_treeview;
+  SZJ_QJson szjQJson;
 
 public slots:
 

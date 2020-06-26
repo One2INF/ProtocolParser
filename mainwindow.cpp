@@ -57,11 +57,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
   connect(ui->actionCheckJson, SIGNAL(triggered()), this, SLOT(slotCheckJson()));
   connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(slotAboutMe()));
+
+  cm_treeview = new QTreeView();
+  setWindowTitle("ProtocolParser");
 }
 
 MainWindow::~MainWindow()
 {
   delete ui;
+  if(cm_treeview != nullptr)
+    delete cm_treeview;
 }
 
 void MainWindow::slotParseProtocol() const
@@ -97,19 +102,17 @@ void MainWindow::slotCheckJson()
     qDebug() << "have not select a json file!";
     return;
   }
-  //QJsonValue jsonValue = SZJ_QJson::openJsonFile("E:\\Projects\\QT\\ProtocolParser\\test_protocol.json");
-  QJsonValue jsonValue = SZJ_QJson::openJsonFile(filePath);
-  qDebug() << jsonValue.type();
-  //SZJ_QJson::travelJson(jsonValue);
 
-  QTreeView *treeview = new QTreeView;
-  SZJ_QJson::showJsonByTreeview(jsonValue, treeview);
+  QJsonValue jsonValue = szjQJson.openJsonFile(filePath);
+  //szjQJson.travelJson(jsonValue);
 
-  treeview->setWindowTitle("JSON Parser");
-  treeview->expandAll();
-  treeview->setMinimumWidth(500);
-  treeview->setMinimumHeight(500);
-  treeview->show();
+  szjQJson.showJsonByTreeview(jsonValue, cm_treeview);
+
+  cm_treeview->setWindowTitle("JSON Parser");
+  cm_treeview->expandAll();
+  cm_treeview->setMinimumWidth(500);
+  cm_treeview->setMinimumHeight(500);
+  cm_treeview->show();
 }
 
 void MainWindow::slotAboutMe()

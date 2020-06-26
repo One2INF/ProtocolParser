@@ -13,12 +13,13 @@ class SZJ_QJson
 {
 private:
   QStandardItemModel* cm_model;
-  static void createJsonItem(const QJsonValue& jsonValue, QStandardItem* stdItem);
+  void createJsonItem(const QJsonValue& jsonValue, QStandardItem* stdItem);
 public:
   SZJ_QJson();
+  ~SZJ_QJson();
   static QJsonValue openJsonFile(QString strJsonFilePath);
   static void travelJson(const QJsonValue& JsonValue);
-  static void showJsonByTreeview(const QJsonValue& jsonValue, QTreeView* treeView);
+  void showJsonByTreeview(const QJsonValue& jsonValue, QTreeView* treeView);
 };
 
 #endif // SZJ_QJSON_H
