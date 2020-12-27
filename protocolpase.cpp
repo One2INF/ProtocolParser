@@ -1,5 +1,14 @@
 ﻿#include "protocolpase.h"
 
+#include <QString>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonValue>
+#include <QTreeView>
+#include <QStandardItem>
+#include <QFile>
+
 /* base class */
 ProtocolParse::ProtocolParse()
 {
@@ -32,6 +41,19 @@ ProtocolPaseFFJAA19::~ProtocolPaseFFJAA19()
 QList<QStringList> ProtocolPaseFFJAA19::Parse(QString strProtocol)
 {
   QList<QStringList> strArray;
+  QFile jsonFile("E:\\Projects\\QT\\ProtocolParser\\test_protocol.json");
+  if(!jsonFile.open(QIODevice::ReadOnly))
+    qDebug() << "could't open default_protocol.json ";
+
+  QByteArray allData = jsonFile.readAll();
+  jsonFile.close();
+
+  QJsonParseError jsonError;
+  QJsonDocument jsonDoc(QJsonDocument::fromJson(allData, &jsonError));
+  if(jsonError.error != QJsonParseError::NoError)
+    qDebug() << "json parse error:" << jsonError.error;
+
+
   qDebug() << "Parse AA19: " << strProtocol;
 
   return strArray;

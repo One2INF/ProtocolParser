@@ -19,14 +19,14 @@ MainWindow::MainWindow(QWidget *parent) :
 {
   ui->setupUi(this);
 /*
- * QAbstractItemModel::setHeaderData is meant to handle user edits of the header,
- * not setting them programmatically.
- * The model then must implement setHeaderData to handle those edit requests.
- * QStandardItemModel apparently doesn't create header items if they weren't set initially,
- * so nothing happens.
- *
- * As you're using QStandardItemModel,
- * you should use setHorizontalHeaderItem or setHorizontalHeaderLabels (Vertical variants are also available) to set up the header
+* QAbstractItemModel::setHeaderData is meant to handle user edits of the header,
+* not setting them programmatically.
+* The model then must implement setHeaderData to handle those edit requests.
+* QStandardItemModel apparently doesn't create header items if they weren't set initially,
+* so nothing happens.
+*
+* As you're using QStandardItemModel,
+* you should use setHorizontalHeaderItem or setHorizontalHeaderLabels (Vertical variants are also available) to set up the header
 
   model->setHeaderData(0, Qt::Horizontal, QString::fromLocal8Bit("字段"));
   model->setHeaderData(1, Qt::Horizontal, QString::fromLocal8Bit("字段名称"));
