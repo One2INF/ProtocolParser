@@ -9,6 +9,8 @@
 #include <QStandardItem>
 #include <QFile>
 
+#include "szj_qjson.h"
+
 /* base class */
 ProtocolParse::ProtocolParse()
 {
@@ -41,21 +43,51 @@ ProtocolPaseFFJAA19::~ProtocolPaseFFJAA19()
 QList<QStringList> ProtocolPaseFFJAA19::Parse(QString strProtocol)
 {
   QList<QStringList> strArray;
-  QFile jsonFile("E:\\Projects\\QT\\ProtocolParser\\test_protocol.json");
-  if(!jsonFile.open(QIODevice::ReadOnly))
-    qDebug() << "could't open default_protocol.json ";
 
-  QByteArray allData = jsonFile.readAll();
-  jsonFile.close();
+  /* use for test, delete later */
+  QJsonValue jsonValue = SZJ_QJson::openJsonFile("E:\\Projects\\QT\\ProtocolParser\\test_protocol.json");
+  QJsonArray infoArray = jsonValue["AA19"]["INFO"].toArray();
+  QJsonObject relationObject = jsonValue["AA19"]["REALATION"].toObject();
 
-  QJsonParseError jsonError;
-  QJsonDocument jsonDoc(QJsonDocument::fromJson(allData, &jsonError));
-  if(jsonError.error != QJsonParseError::NoError)
-    qDebug() << "json parse error:" << jsonError.error;
+  QJsonObject jsonParsed;
+  for(auto it : infoArray)
+  {
+    QJsonArray tempArray = it.toArray();
+    /* if is string, means it's length is up to other field
+     * and the string show the field name.
+     */
+    if(tempArray[2].isString())
+    {
+      QString fieldName = tempArray[2].toString();
+      if(!jsonParsed.contains(fieldName))
+        qDebug() << "Error: cannot find parent field!";
 
+      QString typeName = tempArray[0].toString();
+      QString fieldLength = jsonParsed[typeName].toString();
 
-  qDebug() << "Parse AA19: " << strProtocol;
-
+      /* search by typename */
+      if(relationObject.contains(typeName))
+      {
+        double datalength = relationObject[typeName].toObject()[fieldLength].toDouble();
+        QJsonArray Array;
+        Array.append(tempArray[1]);
+        Array.append(datalength);
+        jsonParsed[tempArray[0].toString()] = Array;
+      }
+      else
+        qDebug() << "Error: search failed!";
+    }
+    else if(tempArray[2].isDouble())
+    {
+      QJsonArray Array;
+      Array.append(tempArray[1]);
+      Array.append(tempArray[2]);
+      jsonParsed[tempArray[0].toString()] = Array;
+    }
+    else
+      qDebug() << "Error: element type not supported!";
+  }
+  qDebug() << jsonParsed;
   return strArray;
 }
 
