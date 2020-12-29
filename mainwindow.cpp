@@ -71,11 +71,14 @@ MainWindow::~MainWindow()
 
 void MainWindow::slotParseProtocol() const
 {
+  /* use for test, delete later */
+  QJsonValue jsonValue = SZJ_QJson::openJsonFile("E:\\Projects\\QT\\ProtocolParser\\test_protocol.json");
+
   QString str = ui->lineEdit->text();
   str.remove(QRegExp("\\s"));
 
-  ProtocolParseInterface pi(str);
-  QList<QStringList> strArray = pi.Parse(str);
+  ProtocolParseInterface parserInterface(str, &jsonValue);
+  QList<QStringList> strArray = parserInterface.Parse2List();
 
   qint8 row = 0, column = 0;
   for(QStringList strlist : strArray)
@@ -104,6 +107,8 @@ void MainWindow::slotCheckJson()
   }
 
   QJsonValue jsonValue = szjQJson.openJsonFile(filePath);
+
+  /* for test */
   //szjQJson.travelJson(jsonValue);
 
   szjQJson.showJsonByTreeview(jsonValue, cm_treeview);

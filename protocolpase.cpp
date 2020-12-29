@@ -11,127 +11,286 @@
 
 #include "szj_qjson.h"
 
+typedef enum
+{
+  IDX_FIELD_NAME = 0,
+  IDX_FIELD_DESCRIPTION,
+  IDX_FIELD_LENGTH,
+  IDX_FIELD_DATA
+}IDX_EN;
+
+typedef struct
+{
+  QString fieldName;
+  QString fieldDescription;
+  double fieldLength;
+  QString filedData;
+}SECTION_UNIT_ST;
+
 /* base class */
-ProtocolParse::ProtocolParse()
+ProtocolParser::ProtocolParser()
 {
   qDebug() << "ProtocolPase Constructor";
 }
 
-ProtocolParse::~ProtocolParse()
+ProtocolParser::~ProtocolParser()
 {
   qDebug() << "ProtocolPase Destructor";
 }
 
-QList<QStringList> ProtocolParse::Parse(QString strProtocol)
+QList<QStringList> ProtocolParser::Parse2List(QString str, QJsonValue* jsonValue)
 {
-  qDebug() << "ProtocolPase none:" << strProtocol;
+  //TODO
+  qDebug() << "ProtocolPase none:" << str;
+  (void)jsonValue;
   QList<QStringList> strArray;
   return strArray;
+}
+
+QJsonValue ProtocolParser::Parse2Json(QString str, QJsonValue *jsonValue)
+{
+  //TODO
+  qDebug() << "ProtocolPase none:" << str;
+
+  return *jsonValue;
 }
 
 /* derived class */
-ProtocolPaseFFJAA19::ProtocolPaseFFJAA19()
+ProtocolPaser_CunKou::ProtocolPaser_CunKou()
 {
-  qDebug() << "ProtocolPaseFFJAA19 Constructor";
+  qDebug() << "ProtocolPase_CunKou Constructor";
 }
 
-ProtocolPaseFFJAA19::~ProtocolPaseFFJAA19()
+ProtocolPaser_CunKou::~ProtocolPaser_CunKou()
 {
-  qDebug() << "ProtocolPaseFFJAA19 Destructor";
+  qDebug() << "ProtocolPase_CunKou Destructor";
 }
 
-QList<QStringList> ProtocolPaseFFJAA19::Parse(QString strProtocol)
+QList<QStringList> ProtocolPaser_CunKou::Parse2List(QString str, QJsonValue* jsonValue)
 {
-  QList<QStringList> strArray;
+  QJsonObject jsonObj = jsonValue->toObject();
+  QJsonArray sectionArray = jsonObj[".SECTION"].toArray();
+  QJsonObject relationObject = jsonObj[".REALATION"].toObject();
 
-  /* use for test, delete later */
-  QJsonValue jsonValue = SZJ_QJson::openJsonFile("E:\\Projects\\QT\\ProtocolParser\\test_protocol.json");
-  QString Header = strProtocol.left(4);
-  QJsonArray infoArray = jsonValue[Header]["INFO"].toArray();
-  QJsonObject relationObject = jsonValue[Header]["REALATION"].toObject();
+  /* for parsing: to facilitate the query */
+  QJsonArray jsonArrayParsed;
+  /* for save */
+  QJsonObject jsonObjParsed;
 
-  QJsonObject jsonParsed;
-  for(auto it : infoArray)
+  SECTION_UNIT_ST unit;
+  QJsonArray unitSection;
+  /* 遍历 section 数组，获取字段信息 */
+  for(auto it : sectionArray)
   {
-    QJsonArray tempArray = it.toArray();
-    /* if is string, means it's length is up to other field
-     * and the string show the field name.
+    QJsonArray unitSection = it.toArray();
+    unit.fieldName = unitSection[IDX_FIELD_NAME].toString();
+    unit.fieldDescription = unitSection[IDX_FIELD_DESCRIPTION].toString();
+    unit.fieldLength = 0;
+    unit.filedData = "";
+
+    /* if FIELD_LENGTH is string, means it's length is up to the other field
+     * and the string show the field name it depend on(parent name).
      */
-    if(tempArray[2].isString())
+    if(unitSection[IDX_FIELD_LENGTH].isString())
     {
-      QString fieldName = tempArray[2].toString();
-      if(!jsonParsed.contains(fieldName))
-        qDebug() << "Error: cannot find parent field!";
-
-      QString typeName = tempArray[0].toString();
-      QString fieldLength = QString::number(jsonParsed[fieldName].toArray()[1].toDouble());
-
-      /* search by typename */
-      if(relationObject.contains(typeName))
+      QString parentName = unitSection[IDX_FIELD_LENGTH].toString();
+      if(!jsonObjParsed.contains(parentName))
       {
-        double datalength = relationObject[typeName].toObject()[fieldLength].toDouble();
-        QJsonArray Array;
-        Array.append(tempArray[1]);
-        Array.append(datalength);
-        jsonParsed[tempArray[0].toString()] = Array;
+        qDebug() << "Error: cannot find parent field! Check the section unit order!";
+        break;
+      }
 
-        qDebug() << "fieldLength" << fieldLength;
-        strProtocol = strProtocol.right(strProtocol.size() - static_cast<int>(datalength));
+      QString parentData = QString::number(jsonObjParsed[parentName].toArray()[2].toDouble());
+
+      /* get field length in relation section */
+      if(relationObject.contains(unit.fieldName))
+      {
+        unit.fieldLength = relationObject[unit.fieldName].toObject()[parentData].toDouble();
       }
       else
+      {
         qDebug() << "Error: search failed!";
+        break;
+      }
     }
-    else if(tempArray[2].isDouble())
+    else if(unitSection[IDX_FIELD_LENGTH].isDouble())
     {
-      QJsonArray Array;
-      Array.append(tempArray[1]);
-      Array.append(tempArray[2]);
-      Array.append(strProtocol.left(tempArray[2].toInt()));
-      jsonParsed[tempArray[0].toString()] = Array;
-
-      strProtocol = strProtocol.right(strProtocol.size() - tempArray[2].toInt());
+      unit.fieldLength = unitSection[IDX_FIELD_LENGTH].toDouble();
     }
     else
+    {
       qDebug() << "Error: element type not supported!";
+      break;
+    }
+
+    unit.filedData = str.left(static_cast<int>(unit.fieldLength));
+
+    /* add to jsonObjParsed and jsonArrayParsed */
+    QJsonArray Array;
+    Array.append(unit.fieldDescription);
+    Array.append(unit.fieldLength);
+    Array.append(unit.filedData);
+    jsonObjParsed[unit.fieldName] = Array;
+
+    Array.push_front(unit.fieldName);
+    jsonArrayParsed.append(Array);
+
+    str = str.right(str.size() - static_cast<int>(unit.fieldLength));
   }
-  qDebug() << "jsonParsed:" << jsonParsed;
+
+  QList<QStringList> strArray;
+
+  for(auto it : jsonArrayParsed)
+  {
+    QJsonArray jsonArray = it.toArray();
+    QStringList strList;
+    strList << jsonArray[IDX_FIELD_NAME].toString() << jsonArray[IDX_FIELD_DESCRIPTION].toString();
+    strList << QString::number(jsonArray[IDX_FIELD_LENGTH].toDouble()) << jsonArray[IDX_FIELD_DATA].toString();
+    strArray << strList;
+  }
+
   return strArray;
 }
 
-QList<QStringList> ProtocolPaseFFJDefault::Parse(QString strProtocol)
+QJsonValue ProtocolPaser_CunKou::Parse2Json(QString str, QJsonValue* jsonValue)
 {
-  qDebug() << "Parse Default: " << strProtocol;
+  QJsonObject jsonObj = jsonValue->toObject();
+  QJsonArray sectionArray = jsonObj[".SECTION"].toArray();
+  QJsonObject relationObject = jsonObj[".REALATION"].toObject();
+
+  /* for parsing: to facilitate the query */
+  QJsonArray jsonArrayParsed;
+  /* for save */
+  QJsonObject jsonObjParsed;
+
+  SECTION_UNIT_ST unit;
+  QJsonArray unitSection;
+  /* 遍历 section 数组，获取字段信息 */
+  for(auto it : sectionArray)
+  {
+    QJsonArray unitSection = it.toArray();
+    unit.fieldName = unitSection[IDX_FIELD_NAME].toString();
+    unit.fieldDescription = unitSection[IDX_FIELD_DESCRIPTION].toString();
+    unit.fieldLength = 0;
+    unit.filedData = "";
+
+    /* if FIELD_LENGTH is string, means it's length is up to the other field
+     * and the string show the field name it depend on(parent name).
+     */
+    if(unitSection[IDX_FIELD_LENGTH].isString())
+    {
+      QString parentName = unitSection[IDX_FIELD_LENGTH].toString();
+      if(!jsonObjParsed.contains(parentName))
+      {
+        qDebug() << "Error: cannot find parent field! Check the section unit order!";
+        break;
+      }
+
+      QString parentData = QString::number(jsonObjParsed[parentName].toArray()[2].toDouble());
+
+      /* get field length in relation section */
+      if(relationObject.contains(unit.fieldName))
+      {
+        unit.fieldLength = relationObject[unit.fieldName].toObject()[parentData].toDouble();
+      }
+      else
+      {
+        qDebug() << "Error: search failed!";
+        break;
+      }
+    }
+    else if(unitSection[IDX_FIELD_LENGTH].isDouble())
+    {
+      unit.fieldLength = unitSection[IDX_FIELD_LENGTH].toDouble();
+    }
+    else
+    {
+      qDebug() << "Error: element type not supported!";
+      break;
+    }
+
+    unit.filedData = str.left(static_cast<int>(unit.fieldLength));
+
+    /* add to jsonObjParsed and jsonArrayParsed */
+    QJsonArray Array;
+    Array.append(unit.fieldDescription);
+    Array.append(unit.fieldLength);
+    Array.append(unit.filedData);
+    jsonObjParsed[unit.fieldName] = Array;
+
+    Array.push_front(unit.fieldName);
+    jsonArrayParsed.append(Array);
+
+    str = str.right(str.size() - static_cast<int>(unit.fieldLength));
+  }
+
+  QJsonValue jsonValueRet;
+
+  for(auto it : jsonArrayParsed)
+  {
+    qDebug() << it;
+  }
+
+  return jsonValueRet;
+}
+
+QList<QStringList> ProtocolPaserDefault::Parse2List(QString str, QJsonValue* jsonValue)
+{
+  (void)str;
+  (void)jsonValue;
+
+  qDebug() << "Default Parser";
+
   QList<QStringList> strArray;
   return strArray;
+}
+
+QJsonValue ProtocolPaserDefault::Parse2Json(QString str, QJsonValue *jsonValue)
+{
+  (void)str;
+  (void)jsonValue;
+
+  qDebug() << "Default Parser";
+
+  QJsonValue jsonValueRet;
+  return jsonValueRet;
 }
 
 /* factory interface class */
-ProtocolParseInterface::ProtocolParseInterface(QString strProtocol)
+ProtocolParseInterface::ProtocolParseInterface(QString str, QJsonValue* jsonValue)
 {
-  QString strType = strProtocol.mid(0, 4);
-  if("AA19" == strType)
-  {
-    pp = new ProtocolPaseFFJAA19();
-  }
-  else
-  {
-    pp = new ProtocolPaseFFJDefault();
-  }
+  QJsonObject jsonObj = jsonValue->toObject();
+
+  this->str = str;
+  this->jsonValue = jsonObj;
+
+  parser = new ProtocolPaser_CunKou();
+//  parser = new ProtocolPaseDefault();
+
   qDebug() << "ProtocolParseInterface Constructor";
 }
 
 ProtocolParseInterface::~ProtocolParseInterface()
 {
   qDebug() << "ProtocolParseInterface Destructor";
-  if(pp)
+  if(parser)
   {
-    delete pp;
+    delete parser;
   }
 }
 
-QList<QStringList> ProtocolParseInterface::Parse(QString str)
+QList<QStringList> ProtocolParseInterface::Parse2List()
 {
-  return  pp->Parse(str);;
+  QString strHeader = str.left(4);
+  QJsonValue jsonValueUnit= jsonValue.toObject()[strHeader];
+
+  return parser->Parse2List(str, &jsonValueUnit);
 }
 
+QJsonValue ProtocolParseInterface::Parse2Json()
+{
+  QString strHeader = str.left(4);
+  QJsonValue jsonValueUnit= jsonValue.toObject()[strHeader];
 
+  return parser->Parse2Json(str, &jsonValueUnit);
+}

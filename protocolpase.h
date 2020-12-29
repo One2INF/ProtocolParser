@@ -3,37 +3,46 @@
 
 #include <QString>
 #include <QDebug>
+#include <QJsonValue>
 
-class ProtocolParse
+class ProtocolParser
 {
 public:
-  explicit ProtocolParse();
-  virtual ~ProtocolParse();
-  virtual QList<QStringList> Parse(QString);
-
+  explicit ProtocolParser();
+  virtual ~ProtocolParser();
+  virtual QList<QStringList> Parse2List(QString str, QJsonValue* jsonValue);
+  virtual QJsonValue Parse2Json(QString str, QJsonValue* jsonValue);
 };
 
-class ProtocolPaseFFJAA19 : public ProtocolParse
+class ProtocolPaser_CunKou : public ProtocolParser
 {
 public:
-  explicit ProtocolPaseFFJAA19();
-  ~ProtocolPaseFFJAA19();
-  QList<QStringList> Parse(QString);
+  explicit ProtocolPaser_CunKou(void);
+  ~ProtocolPaser_CunKou();
+
+  QList<QStringList> Parse2List(QString str, QJsonValue* jsonValue);
+  QJsonValue Parse2Json(QString str, QJsonValue* jsonValue);
 };
 
-class ProtocolPaseFFJDefault : public ProtocolParse
+class ProtocolPaserDefault : public ProtocolParser
 {
 public:
-  QList<QStringList> Parse(QString);
+  QList<QStringList> Parse2List(QString str, QJsonValue* jsonValue);
+  QJsonValue Parse2Json(QString str, QJsonValue* jsonValue);
 };
 
 class ProtocolParseInterface
 {
+private:
+  QString str;
+  QJsonValue jsonValue;
+
 public:
-  explicit ProtocolParseInterface(QString strProtocol);
+  explicit ProtocolParseInterface(QString str, QJsonValue* jsonValue);
   ~ProtocolParseInterface();
-  ProtocolParse *pp;
-  QList<QStringList> Parse(QString str);
+  ProtocolParser *parser;
+  QList<QStringList> Parse2List(void);
+  QJsonValue Parse2Json(void);
 };
 
 #endif // PROTOCOLPASE_H

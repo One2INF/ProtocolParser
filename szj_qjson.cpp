@@ -30,8 +30,8 @@ QJsonValue SZJ_QJson::openJsonFile(QString strJsonFilePath)
   QJsonDocument jsonDoc(QJsonDocument::fromJson(allData, &jsonError));
   if(jsonError.error != QJsonParseError::NoError)
   {
-      qDebug() << "json parse error:" << jsonError.error;
-      return QJsonValue::Null;
+    qDebug() << "json parse error:" << jsonError.error;
+    return QJsonValue::Null;
   }
 
   if(jsonDoc.isObject())
