@@ -46,8 +46,9 @@ QList<QStringList> ProtocolPaseFFJAA19::Parse(QString strProtocol)
 
   /* use for test, delete later */
   QJsonValue jsonValue = SZJ_QJson::openJsonFile("E:\\Projects\\QT\\ProtocolParser\\test_protocol.json");
-  QJsonArray infoArray = jsonValue["AA19"]["INFO"].toArray();
-  QJsonObject relationObject = jsonValue["AA19"]["REALATION"].toObject();
+  QString Header = strProtocol.left(4);
+  QJsonArray infoArray = jsonValue[Header]["INFO"].toArray();
+  QJsonObject relationObject = jsonValue[Header]["REALATION"].toObject();
 
   QJsonObject jsonParsed;
   for(auto it : infoArray)
@@ -63,7 +64,7 @@ QList<QStringList> ProtocolPaseFFJAA19::Parse(QString strProtocol)
         qDebug() << "Error: cannot find parent field!";
 
       QString typeName = tempArray[0].toString();
-      QString fieldLength = jsonParsed[typeName].toString();
+      QString fieldLength = QString::number(jsonParsed[fieldName].toArray()[1].toDouble());
 
       /* search by typename */
       if(relationObject.contains(typeName))
@@ -73,6 +74,9 @@ QList<QStringList> ProtocolPaseFFJAA19::Parse(QString strProtocol)
         Array.append(tempArray[1]);
         Array.append(datalength);
         jsonParsed[tempArray[0].toString()] = Array;
+
+        qDebug() << "fieldLength" << fieldLength;
+        strProtocol = strProtocol.right(strProtocol.size() - static_cast<int>(datalength));
       }
       else
         qDebug() << "Error: search failed!";
@@ -82,12 +86,15 @@ QList<QStringList> ProtocolPaseFFJAA19::Parse(QString strProtocol)
       QJsonArray Array;
       Array.append(tempArray[1]);
       Array.append(tempArray[2]);
+      Array.append(strProtocol.left(tempArray[2].toInt()));
       jsonParsed[tempArray[0].toString()] = Array;
+
+      strProtocol = strProtocol.right(strProtocol.size() - tempArray[2].toInt());
     }
     else
       qDebug() << "Error: element type not supported!";
   }
-  qDebug() << jsonParsed;
+  qDebug() << "jsonParsed:" << jsonParsed;
   return strArray;
 }
 
