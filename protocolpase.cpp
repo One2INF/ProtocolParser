@@ -100,7 +100,7 @@ QList<QStringList> ProtocolPaser_CunKou::Parse2List(QString str, QJsonValue* jso
         break;
       }
 
-      QString parentData = QString::number(jsonObjParsed[parentName].toArray()[2].toDouble());
+      QString parentData = jsonObjParsed[parentName].toArray()[2].toString();
 
       /* get field length in relation section */
       if(relationObject.contains(unit.fieldName))

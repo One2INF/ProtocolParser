@@ -80,6 +80,7 @@ void MainWindow::slotParseProtocol() const
   ProtocolParseInterface parserInterface(str, &jsonValue);
   QList<QStringList> strArray = parserInterface.Parse2List();
 
+  model->removeRows(0, model->rowCount());
   qint8 row = 0, column = 0;
   for(QStringList strlist : strArray)
   {
