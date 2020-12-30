@@ -23,6 +23,7 @@ public:
 private:
   Ui::MainWindow *ui;
   QStandardItem *qstdmodel;
+  QStandardItemModel *model;
   QMenu *fileMenu;
   QString cm_strDefaultOpenPath;
   QTreeView* cm_treeview;

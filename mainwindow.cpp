@@ -11,14 +11,13 @@
 #include <QFileDialog>
 #include <QMessageBox>
 
-QStandardItemModel *model = new QStandardItemModel();
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
   ui(new Ui::MainWindow)
 {
   ui->setupUi(this);
-/*
+/**
 * QAbstractItemModel::setHeaderData is meant to handle user edits of the header,
 * not setting them programmatically.
 * The model then must implement setHeaderData to handle those edit requests.
@@ -33,8 +32,8 @@ MainWindow::MainWindow(QWidget *parent) :
   model->setHeaderData(2, Qt::Horizontal, QString::fromLocal8Bit("长度"));
   model->setHeaderData(3, Qt::Horizontal, QString::fromLocal8Bit("值"));
   model->setHeaderData(4, Qt::Horizontal, QString::fromLocal8Bit("备注"));
-*/
-
+**/
+  model = new QStandardItemModel();
   model->setHorizontalHeaderItem(0, new QStandardItem(QString::fromLocal8Bit("字段")));
   model->setHorizontalHeaderItem(1, new QStandardItem(QString::fromLocal8Bit("字段名称")));
   model->setHorizontalHeaderItem(2, new QStandardItem(QString::fromLocal8Bit("长度")));
