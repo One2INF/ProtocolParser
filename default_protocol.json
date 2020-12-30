@@ -1,0 +1,198 @@
+{
+  "AA11" :
+  {
+    ".SECTION":
+    [
+      ["HEAD", "报文头", 4],
+      ["MACHINECODE", "原机器编号", 13],
+      ["M_SEQ", "原机器流水号", 8],
+      ["COMM", "命令", 4],
+      ["TIME", "时间", 14],
+      ["INIT_OP", "初始化操作类型", 1],
+      ["INIT_TYPE", "原初始化类型", 2],
+      ["INIT_TYPE_VALUE", "参数值描述", "INIT_TYPE"],
+      ["FOOTER", "报文尾", 4]
+    ],
+
+    ".REALATION":
+    {
+      "INIT_TYPE_VALUE":{"01":0, "02":9, "03":2, "04":2, "05":2, "06":20, "07":12, "08":5}
+    }
+  },
+
+  "AA12" :
+  {
+    ".SECTION":
+    [
+      ["HEAD", "报文头", 4],
+      ["OLD_MACHINECODE", "原机器编号", 13],
+      ["OLD_M_SEQ", "原机器流水号", 8],
+      ["COMM", "命令", 4],
+      ["TIME", "时间", 14],
+      ["OLD_INIT_OP", "初始化操作类型", 1],
+      ["OLD_INIT_TYPE", "原初始化类型", 2],
+      ["RESPONSE_CODE", "处理结果", 6],
+      ["NEXT_INIT_TYPE", "下一个需要初始化参数类型", 2],
+      ["FOOTER", "报文尾", 4]
+    ]
+  },
+
+  "AA13" :
+  {
+    ".SECTION":
+    [
+      ["HEAD", "报文头", 4],
+      ["MACHINECODE", "机器编号", 13],
+      ["M_SEQ", "机器流水号", 8],
+      ["COMM", "命令", 4],
+      ["TIME", "时间", 14],
+      ["DL_OP", "下载方式", 1],
+      ["DL_TYPE", "下载参数类型", 2],
+      ["FOOTER", "报文尾", 4]
+    ]
+  },
+
+  "AA14" :
+  {
+    ".SECTION":
+    [
+      ["HEAD", "报文头", 4],
+      ["OLD_MACHINECODE", "原机器编号", 13],
+      ["OLD_M_SEQ", "机器流水号", 8],
+      ["COMM", "命令", 4],
+      ["TIME", "时间", 14],
+      ["OLD_DL_OP", "原下载方式", 1],
+      ["OLD_DL_TYPE", "原下载参数类型", 2],
+      ["NEXT_DL_TYPE", "下一个待下载参数类型", 2],
+      ["DL_TYPE_VALUE", "参数对应类型", "OLD_DL_TYPE"],
+      ["FOOTER", "报文尾", 4]
+    ],
+    
+    ".REALATION":
+    {
+      "DL_TYPE_VALUE":{"01":14, "02":9, "03":2, "04":2, "05":2, "06":20, "07":12, "08":5}
+    }
+  },
+
+  "AA19" :
+  {
+    ".SECTION":
+    [
+      ["HEAD", "报文头", 4],
+      ["MACHINECODE", "机器编号", 13],
+      ["M_SEQ", "机器流水号", 8],
+      ["TIME", "时间", 14],
+      ["COMM", "命令", 4],
+      ["USE_STATUS", "用户使用状态", 2],
+      ["DEV_STATUS", "设备状态", 2],
+      ["DOOR_STATUS", "门状态", 2],
+      ["SIM_SIGNAL", "信号强度", 2],
+      ["RUN_TIME", "运行时间(小时)", 5],
+      ["LOST_CONNECTTIME", "断网时间(分钟)", 3],
+      ["LOCAL_DATA_NUM", "本地数据数目", 3],
+      ["FOOTER", "报文尾", 4]
+    ]
+  },
+
+  "AA20" :
+  {
+    ".SECTION":
+    [
+      ["HEAD", "报文头", 4],
+      ["OLD_MACHINECODE", "机器编号", 13],
+      ["OLD_M_SEQ", "机器流水号", 8],
+      ["TIME", "时间", 14],
+      ["COMM", "命令", 4],
+      ["RETURN_CODE", "返回码", 6],
+      ["RESTART_STATUS", "是否需要重启", 2],
+      ["INITUP_STATUS", "是否需要上传参数", 2],
+      ["INITDOWN_STATUS", "是否需要下载参数", 2],
+      ["APPOT_COMM", "APP端操作", 2],
+      ["APPOT_P_SEQ", "平台业务流水号/扫码保护时间", 2],
+      ["APPOT_CARDNO", "卡号", 11],
+      ["FOOTER", "报文尾", 4]
+    ]
+  },
+
+  "AA25" :
+  {
+    ".SECTION":
+    [
+      ["HEAD", "报文头", 4],
+      ["MACHINECODE", "机器编号", 13],
+      ["M_SEQ", "机器流水号", 8],
+      ["TIME", "时间", 14],
+      ["COMM", "命令", 4],
+      ["CARD_TYPE", "卡片类型", 2],
+      ["GB_TYPE", "领取类型", 2],
+      ["GB_SEQ", "平台业务流水号", 8],
+      ["CARDNO_LENGTH", "卡号长度", 2],
+      ["CARD_NO", "卡号", 13],
+      ["FOOTER", "报文尾", 4]
+    ]
+  },
+
+  "AA26" :
+  {
+    ".SECTION":
+    [
+      ["HEAD", "报文头", 4],
+      ["OLD_MACHINECODE", "机器编号", 13],
+      ["OLD_SEQ", "机器流水号", 8],
+      ["TIME", "时间", 14],
+      ["COMM", "命令", 4],
+      ["CARD_NO", "卡号", 11],
+      ["REVIEW_FLAG", "用户审核结果", 2],
+      ["SEQ", "临时掉袋流水", 8],
+      ["TRACK_INDEX", "轨道编号", 2],
+      ["FOOTER", "报文尾", 4]
+    ]
+  },
+
+  "AA27" :
+  {
+    ".SECTION":
+    [
+      ["HEAD", "报文头", 4],
+      ["MACHINECODE", "机器编号", 13],
+      ["M_SEQ", "机器流水号", 8],
+      ["TIME", "时间", 14],
+      ["COMM", "命令", 4],
+      ["CARD_NO", "卡号", 11],
+      ["OLD_GB_TYPE", "平台领取购买业务流水号", 8],
+      ["OLD_TRACK_INDEX", "原分配轨道编号", 2],
+      ["STATUS", "状态", 2],
+      ["DATA_TYPE", "数据时间类型", 2],
+      ["FOOTER", "报文尾", 4]
+    ]
+  },
+
+  "AA28" :
+  {
+    ".SECTION":
+    [
+      ["HEAD", "报文头", 4],
+      ["OLD_MACHINECODE", "机器编号", 13],
+      ["OLD_MSEQ", "机器流水号", 8],
+      ["TIME", "时间", 14],
+      ["COMM", "命令", 4],
+      ["CARD_NO", "卡号", 11],
+      ["GB_SEQ", "平台业务流水号", 8],
+      ["OLD_TRACK_INDEX", "原分配轨道编号", 2],
+      ["STATUS", "状态", 2],
+      ["FOOTER", "报文尾", 4]
+    ]
+  },
+
+  "AA99" :
+  {
+    ".SECTION":
+    [
+      ["HEAD", "报文头", 4],
+      ["TIME", "时间", 14],
+      ["RETURN_CODE", "返回码", 6],
+      ["FOOTER", "报文尾", 4]
+    ]
+  }
+}
+

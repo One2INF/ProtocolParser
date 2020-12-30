@@ -19,7 +19,7 @@ QJsonValue SZJ_QJson::openJsonFile(QString strJsonFilePath)
   QFile jsonFile(strJsonFilePath);
   if(!jsonFile.open(QIODevice::ReadOnly))
   {
-    qDebug() << "could't open default_protocol.json ";
+    qDebug() << "could't open json file";
     return QJsonValue::Null;
   }
 

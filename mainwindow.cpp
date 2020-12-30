@@ -71,7 +71,8 @@ MainWindow::~MainWindow()
 void MainWindow::slotParseProtocol() const
 {
   /* use for test, delete later */
-  QJsonValue jsonValue = SZJ_QJson::openJsonFile("E:\\Projects\\QT\\ProtocolParser\\test_protocol.json");
+  QJsonValue jsonValue = SZJ_QJson::openJsonFile("./test_protocol.json");
+  //QJsonValue jsonValue = SZJ_QJson::openJsonFile("://default_protocol.json");
 
   QString str = ui->lineEdit->text();
   str.remove(QRegExp("\\s"));
