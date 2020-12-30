@@ -54,6 +54,9 @@ MainWindow::MainWindow(QWidget *parent) :
   QObject::connect(ui->lineEdit, SIGNAL(returnPressed()),
                    this, SLOT(slotParseProtocol()));
 
+  QObject::connect(ui->listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
+                   this, SLOT(slotSetJsonfile(QListWidgetItem*)));
+
   connect(ui->actionCheckJson, SIGNAL(triggered()), this, SLOT(slotCheckJson()));
   connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(slotAboutMe()));
 
@@ -93,6 +96,16 @@ void MainWindow::slotParseProtocol() const
     }
     ++row;
   }
+}
+
+void MainWindow::slotSetJsonfile(QListWidgetItem *item)
+{
+  QString filePath = QFileDialog::getOpenFileName(this, tr("Open File"),
+      ".", tr("json files (*.json)"));
+
+  item->setText(filePath);
+
+  qDebug() << filePath;
 }
 
 void MainWindow::slotCheckJson()

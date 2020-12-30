@@ -6,6 +6,7 @@
 #include <QMainWindow>
 #include <QDebug>
 #include <QStandardItemModel>
+#include <QListWidgetItem>
 #include <QTreeView>
 
 namespace Ui {
@@ -35,6 +36,7 @@ private slots:
   void slotCheckJson();
   void slotAboutMe();
   void slotParseProtocol() const;
+  void slotSetJsonfile(QListWidgetItem *item);
 };
 
 #endif // MAINWINDOW_H
