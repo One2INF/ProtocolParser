@@ -18,17 +18,17 @@ class ProtocolPaser_CunKou : public ProtocolParser
 {
 public:
   explicit ProtocolPaser_CunKou(void);
-  ~ProtocolPaser_CunKou();
+  ~ProtocolPaser_CunKou() override;
 
-  QList<QStringList> Parse2List(QString str, QJsonValue* jsonValue);
-  QJsonValue Parse2Json(QString str, QJsonValue* jsonValue);
+  QList<QStringList> Parse2List(QString str, QJsonValue* jsonValue) override;
+  QJsonValue Parse2Json(QString str, QJsonValue* jsonValue) override;
 };
 
 class ProtocolPaserDefault : public ProtocolParser
 {
 public:
-  QList<QStringList> Parse2List(QString str, QJsonValue* jsonValue);
-  QJsonValue Parse2Json(QString str, QJsonValue* jsonValue);
+  QList<QStringList> Parse2List(QString str, QJsonValue* jsonValue) override;
+  QJsonValue Parse2Json(QString str, QJsonValue* jsonValue) override;
 };
 
 class ProtocolParseInterface

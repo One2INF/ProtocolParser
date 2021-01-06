@@ -19,7 +19,7 @@ class MainWindow : public QMainWindow
 
 public:
   explicit MainWindow(QWidget *parent = nullptr);
-  ~MainWindow();
+  ~MainWindow() override;
 
 private:
   Ui::MainWindow *ui;
@@ -28,6 +28,7 @@ private:
   QMenu *fileMenu;
   QTreeView* cm_treeview;
   SZJ_QJson szjQJson;
+  QList<QJsonValue> jsonvalueList;
 
 public slots:
 
