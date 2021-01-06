@@ -26,7 +26,6 @@ private:
   QStandardItem *qstdmodel;
   QStandardItemModel *model;
   QMenu *fileMenu;
-  QString cm_strDefaultOpenPath;
   QTreeView* cm_treeview;
   SZJ_QJson szjQJson;
 

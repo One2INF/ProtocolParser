@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
   ui(new Ui::MainWindow)
 {
   ui->setupUi(this);
-/**
+/*
 * QAbstractItemModel::setHeaderData is meant to handle user edits of the header,
 * not setting them programmatically.
 * The model then must implement setHeaderData to handle those edit requests.
@@ -27,18 +27,19 @@ MainWindow::MainWindow(QWidget *parent) :
 * As you're using QStandardItemModel,
 * you should use setHorizontalHeaderItem or setHorizontalHeaderLabels (Vertical variants are also available) to set up the header
 
-  model->setHeaderData(0, Qt::Horizontal, QString::fromLocal8Bit("字段"));
-  model->setHeaderData(1, Qt::Horizontal, QString::fromLocal8Bit("字段名称"));
-  model->setHeaderData(2, Qt::Horizontal, QString::fromLocal8Bit("长度"));
-  model->setHeaderData(3, Qt::Horizontal, QString::fromLocal8Bit("值"));
-  model->setHeaderData(4, Qt::Horizontal, QString::fromLocal8Bit("备注"));
-**/
+  model->setHeaderData(0, Qt::Horizontal, "字段");
+  model->setHeaderData(1, Qt::Horizontal, "字段名称");
+  model->setHeaderData(2, Qt::Horizontal, "长度");
+  model->setHeaderData(3, Qt::Horizontal, "值");
+  model->setHeaderData(4, Qt::Horizontal, "备注");
+*/
+
   model = new QStandardItemModel();
-  model->setHorizontalHeaderItem(0, new QStandardItem(QString::fromLocal8Bit("字段")));
-  model->setHorizontalHeaderItem(1, new QStandardItem(QString::fromLocal8Bit("字段名称")));
-  model->setHorizontalHeaderItem(2, new QStandardItem(QString::fromLocal8Bit("长度")));
-  model->setHorizontalHeaderItem(3, new QStandardItem(QString::fromLocal8Bit("值")));
-  model->setHorizontalHeaderItem(4, new QStandardItem(QString::fromLocal8Bit("备注")));
+  model->setHorizontalHeaderItem(0, new QStandardItem("字段"));
+  model->setHorizontalHeaderItem(1, new QStandardItem("字段名称"));
+  model->setHorizontalHeaderItem(2, new QStandardItem("长度"));
+  model->setHorizontalHeaderItem(3, new QStandardItem("值"));
+  model->setHorizontalHeaderItem(4, new QStandardItem("备注"));
 
   ui->tableView->setModel(model);
   ui->tableView->setWindowTitle("pop");
@@ -103,16 +104,14 @@ void MainWindow::slotSetJsonfile(QListWidgetItem *item)
   QString filePath = QFileDialog::getOpenFileName(this, tr("Open File"),
       ".", tr("json files (*.json)"));
 
-  item->setText(filePath);
-
-  qDebug() << filePath;
+  if(filePath != "")
+    item->setText(QFileInfo(filePath).fileName());
 }
 
 void MainWindow::slotCheckJson()
 {
-  cm_strDefaultOpenPath = "E:\\Projects\\QT\\ProtocolParser";
   QString filePath = QFileDialog::getOpenFileName(this, tr("Open File"),
-      cm_strDefaultOpenPath, tr("json files (*.json)"));
+      "E:\\Projects\\QT\\ProtocolParser", tr("json files (*.json)"));
 
   if(filePath.isEmpty())
   {
