@@ -81,7 +81,7 @@ void MainWindow::slotParseProtocol() const
   QJsonValue jsonValue = SZJ_QJson::openJsonFile("./test_protocol.json");
   //QJsonValue jsonValue = SZJ_QJson::openJsonFile(":/default_protocol.json");
   if(jsonValue.isNull())
-     ui->statusBar->showMessage("could't open or parse json file");
+     ui->statusBar->showMessage("can't open or parse json file!");
 
   QString str = ui->lineEdit->text();
   str.remove(QRegExp("\\s"));

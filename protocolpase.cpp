@@ -78,7 +78,7 @@ QList<QStringList> ProtocolPaser_CunKou::Parse2List(QString str, QJsonValue* jso
   QJsonObject jsonObjParsed;
 
   SECTION_UNIT_ST unit;
-  QJsonArray unitSection;
+
   /* 遍历 section 数组，获取字段信息 */
   for(auto it : sectionArray)
   {
