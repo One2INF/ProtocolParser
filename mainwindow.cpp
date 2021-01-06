@@ -49,6 +49,9 @@ MainWindow::MainWindow(QWidget *parent) :
   ui->tableView->horizontalHeader()->setMinimumSectionSize(50);
   ui->tableView->show();
 
+  /* status bar */
+  ui->statusBar->showMessage("hello protocolpaser : )");
+
   QObject::connect(ui->DoButton, SIGNAL(clicked()),
                    this, SLOT(slotParseProtocol()));
 
@@ -76,7 +79,9 @@ void MainWindow::slotParseProtocol() const
 {
   /* use for test, delete later */
   QJsonValue jsonValue = SZJ_QJson::openJsonFile("./test_protocol.json");
-  //QJsonValue jsonValue = SZJ_QJson::openJsonFile("://default_protocol.json");
+  //QJsonValue jsonValue = SZJ_QJson::openJsonFile(":/default_protocol.json");
+  if(jsonValue.isNull())
+     ui->statusBar->showMessage("could't open or parse json file");
 
   QString str = ui->lineEdit->text();
   str.remove(QRegExp("\\s"));
@@ -121,7 +126,7 @@ void MainWindow::slotCheckJson()
 
   QJsonValue jsonValue = szjQJson.openJsonFile(filePath);
 
-  /* for test */
+  /* for test: to check if jasonvalue is valid */
   //szjQJson.travelJson(jsonValue);
 
   szjQJson.showJsonByTreeview(jsonValue, cm_treeview);
