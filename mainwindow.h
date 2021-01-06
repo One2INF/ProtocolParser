@@ -33,10 +33,13 @@ private:
 public slots:
 
 private slots:
-  void slotCheckJson();
-  void slotAboutMe();
-  void slotParseProtocol() const;
+  void slotCheckJson(void);
+  void slotAboutMe(void);
+  void slotParseProtocol(void) const;
   void slotSetJsonfile(QListWidgetItem *item);
+
+  void slotAddListWidgetItem(void);
+  void slotDeleteListWidgetItem(void);
 };
 
 #endif // MAINWINDOW_H

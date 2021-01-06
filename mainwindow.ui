@@ -15,6 +15,54 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="2" colspan="2">
+     <widget class="QTableView" name="tableView"/>
+    </item>
+    <item row="3" column="0">
+     <widget class="QPushButton" name="AddButton">
+      <property name="minimumSize">
+       <size>
+        <width>60</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>60</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Add</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="3">
+     <widget class="QPushButton" name="DoButton">
+      <property name="minimumSize">
+       <size>
+        <width>60</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>60</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Do</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="2">
+     <widget class="QLineEdit" name="lineEdit">
+      <property name="text">
+       <string>AA19990157100000100000005202006161000261045000000130000000000019AA</string>
+      </property>
+     </widget>
+    </item>
     <item row="3" column="1">
      <widget class="QPushButton" name="DeleteButton">
       <property name="minimumSize">
@@ -36,80 +84,12 @@
        </size>
       </property>
       <property name="text">
-       <string>Add</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="2">
-     <widget class="QLineEdit" name="lineEdit">
-      <property name="text">
-       <string>AA19990157100000100000005202006161000261045000000130000000000019AA</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="0">
-     <widget class="QPushButton" name="AddButton">
-      <property name="minimumSize">
-       <size>
-        <width>60</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>60</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="text">
        <string>Delete</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="2" colspan="2">
-     <widget class="QTableView" name="tableView"/>
-    </item>
-    <item row="3" column="3">
-     <widget class="QPushButton" name="DoButton">
-      <property name="minimumSize">
-       <size>
-        <width>60</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>60</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Do</string>
       </property>
      </widget>
     </item>
     <item row="0" column="0" rowspan="3" colspan="2">
      <widget class="QListWidget" name="listWidget">
-      <item>
-       <property name="text">
-        <string>新建项目</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>新建项目</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>新建项目</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>新建项目</string>
-       </property>
-      </item>
       <item>
        <property name="text">
         <string>新建项目</string>

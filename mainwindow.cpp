@@ -55,6 +55,11 @@ MainWindow::MainWindow(QWidget *parent) :
   QObject::connect(ui->DoButton, SIGNAL(clicked()),
                    this, SLOT(slotParseProtocol()));
 
+  QObject::connect(ui->AddButton, SIGNAL(clicked()),
+                   this, SLOT(slotAddListWidgetItem()));
+  QObject::connect(ui->DeleteButton, SIGNAL(clicked()),
+                   this, SLOT(slotDeleteListWidgetItem()));
+
   QObject::connect(ui->lineEdit, SIGNAL(returnPressed()),
                    this, SLOT(slotParseProtocol()));
 
@@ -68,17 +73,37 @@ MainWindow::MainWindow(QWidget *parent) :
   setWindowTitle("ProtocolParser");
 }
 
-MainWindow::~MainWindow()
+void MainWindow::slotAddListWidgetItem()
 {
-  delete ui;
-  if(cm_treeview != nullptr)
-    delete cm_treeview;
+  ui->listWidget->addItem(new QListWidgetItem("新建项目"));
+}
+
+void MainWindow::slotDeleteListWidgetItem()
+{
+  if(ui->listWidget->selectedItems().isEmpty())
+  {
+    ui->statusBar->showMessage("please select a item to be deleted!");
+    return;
+  }
+
+  for(auto item : ui->listWidget->selectedItems())
+  {
+    ui->listWidget->removeItemWidget(item);
+    delete item;
+    qDebug() << "gh" << item;
+  }
+
+  ui->statusBar->showMessage("item deleted!");
 }
 
 void MainWindow::slotParseProtocol() const
 {
+  QJsonValue jsonValue;
+  if(jsonvalueList.isEmpty())
+    jsonValue = SZJ_QJson::openJsonFile(":/default_protocol.json");
+  else
+    jsonValue = jsonvalueList.front();
 
-  QJsonValue jsonValue = SZJ_QJson::openJsonFile(":/default_protocol.json");
   if(jsonValue.isNull())
      ui->statusBar->showMessage("can't open or parse json file!");
 
@@ -105,11 +130,24 @@ void MainWindow::slotParseProtocol() const
 
 void MainWindow::slotSetJsonfile(QListWidgetItem *item)
 {
+  ui->statusBar->showMessage("please select a json file!");
+
   QString filePath = QFileDialog::getOpenFileName(this, tr("Open File"),
       ".", tr("json files (*.json)"));
 
-  if(filePath != "")
-    item->setText(QFileInfo(filePath).fileName());
+  if(filePath == "")
+    return;
+
+  item->setText(QFileInfo(filePath).fileName());
+
+  QJsonValue jsonValue = szjQJson.openJsonFile(filePath);
+  if(jsonValue.isNull())
+     ui->statusBar->showMessage("can't open or parse json file!");
+  else
+  {
+    ui->statusBar->showMessage("selected json file parsed!");
+    jsonvalueList << jsonValue;
+  }
 }
 
 void MainWindow::slotCheckJson()
@@ -142,4 +180,11 @@ void MainWindow::slotAboutMe()
   QMessageBox::about(nullptr, "About Me", "Author: One2INF\r\n"
                                           "gitee: https://gitee.com/One2INF\r\n"
                                           "Email: 1871750676@qq.com");
+}
+
+MainWindow::~MainWindow()
+{
+  delete ui;
+  if(cm_treeview != nullptr)
+    delete cm_treeview;
 }
