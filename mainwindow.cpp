@@ -73,8 +73,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
   cm_treeview = new QTreeView();
   setWindowTitle("ProtocolParser");
-
-  jsonvalueList << QJsonValue::Null;
 }
 
 void MainWindow::slotAddListWidgetItem()
@@ -91,36 +89,49 @@ void MainWindow::slotDeleteListWidgetItem()
     return;
   }
 
+  /* delete it in listWidget and jsonvalueList */
   for(auto item : ui->listWidget->selectedItems())
   {
     int row = ui->listWidget->row(item);
-    qDebug() << row;
     ui->listWidget->takeItem(row);
     jsonvalueList.removeAt(row);
   }
-
-  for(auto it : jsonvalueList)
-    qDebug() << it;
 
   ui->statusBar->showMessage("item deleted!");
 }
 
 void MainWindow::slotParseProtocol() const
 {
-  QJsonValue jsonValue;
-  if(jsonvalueList.isEmpty())
-    jsonValue = SZJ_QJson::openJsonFile(":/default_protocol.json");
-  else
-    jsonValue = jsonvalueList.front();
-
-  if(jsonValue.isNull())
-     ui->statusBar->showMessage("can't open or parse json file!");
-
   QString str = ui->lineEdit->text();
   str.remove(QRegExp("\\s"));
 
-  ProtocolParseInterface parserInterface(str, &jsonValue);
-  QList<QStringList> strArray = parserInterface.Parse2List();
+  QList<QStringList> strArray;
+  if(jsonvalueList.isEmpty())
+  {
+    ui->statusBar->showMessage("no json file select, use default json file!");
+    QJsonValue jsonValue = SZJ_QJson::openJsonFile(":/default_protocol.json");
+    ProtocolParseInterface parserInterface(str, &jsonValue);
+    strArray = parserInterface.Parse2List();
+  }
+  else
+  {
+    for(QJsonValue jsonValue : jsonvalueList)
+    {
+      ProtocolParseInterface parserInterface(str, &jsonValue);
+      strArray = parserInterface.Parse2List();
+      if(!strArray.isEmpty())
+      {
+        ui->statusBar->showMessage("text parsed!");
+        break;
+      }
+    }
+  }
+
+  if(strArray.isEmpty())
+  {
+    ui->statusBar->showMessage("invalid text!");
+    return;
+  }
 
   model->removeRows(0, model->rowCount());
   qint8 row = 0, column = 0;
@@ -155,7 +166,8 @@ void MainWindow::slotSetJsonfile(QListWidgetItem *item)
   else
   {
     ui->statusBar->showMessage("selected json file parsed!");
-    jsonvalueList << jsonValue;
+    int row = ui->listWidget->row(item);
+    jsonvalueList[row] = jsonValue;
   }
 }
 
@@ -186,7 +198,7 @@ void MainWindow::slotCheckJson()
 
 void MainWindow::slotAboutMe()
 {
-  QString msgAuthor = QString("Author: One2INF<p>");
+  QString msgAuthor = QString("Author: One2INF (咸个和和和)<p>");
   QString msgGitee = QString("Gitee: <a href=https://gitee.com/One2INF>https://gitee.com/One2INF</a><p>");
   QString msgEmail = QString("Email: <a href=1871750676@qq.com>1871750676@qq.com</a><p>");
   QString msg = msgAuthor + msgGitee + msgEmail;

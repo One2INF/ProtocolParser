@@ -9,7 +9,8 @@
 #include <QListWidgetItem>
 #include <QTreeView>
 
-namespace Ui {
+namespace Ui
+{
   class MainWindow;
 }
 
