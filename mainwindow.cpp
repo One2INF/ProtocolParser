@@ -186,9 +186,12 @@ void MainWindow::slotCheckJson()
 
 void MainWindow::slotAboutMe()
 {
-  QMessageBox::about(nullptr, "About Me", "Author: One2INF\r\n"
-                                          "gitee: https://gitee.com/One2INF\r\n"
-                                          "Email: 1871750676@qq.com");
+  QString msgAuthor = QString("Author: One2INF<p>");
+  QString msgGitee = QString("Gitee: <a href=https://gitee.com/One2INF>https://gitee.com/One2INF</a><p>");
+  QString msgEmail = QString("Email: <a href=1871750676@qq.com>1871750676@qq.com</a><p>");
+  QString msg = msgAuthor + msgGitee + msgEmail;
+
+  QMessageBox::about(nullptr, "About Me", msg);
 }
 
 MainWindow::~MainWindow()
