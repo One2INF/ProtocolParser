@@ -66,16 +66,21 @@ MainWindow::MainWindow(QWidget *parent) :
   QObject::connect(ui->listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
                    this, SLOT(slotSetJsonfile(QListWidgetItem*)));
 
-  connect(ui->actionCheckJson, SIGNAL(triggered()), this, SLOT(slotCheckJson()));
-  connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(slotAboutMe()));
+  QObject::connect(ui->actionCheckJson, SIGNAL(triggered()),
+                   this, SLOT(slotCheckJson()));
+  QObject::connect(ui->actionAbout, SIGNAL(triggered()),
+                   this, SLOT(slotAboutMe()));
 
   cm_treeview = new QTreeView();
   setWindowTitle("ProtocolParser");
+
+  jsonvalueList << QJsonValue::Null;
 }
 
 void MainWindow::slotAddListWidgetItem()
 {
-  ui->listWidget->addItem(new QListWidgetItem("新建项目"));
+  ui->listWidget->addItem(new QListWidgetItem(QString("新建项目%1").arg(ui->listWidget->count())));
+  jsonvalueList << QJsonValue::Null;
 }
 
 void MainWindow::slotDeleteListWidgetItem()
@@ -88,10 +93,14 @@ void MainWindow::slotDeleteListWidgetItem()
 
   for(auto item : ui->listWidget->selectedItems())
   {
-    ui->listWidget->removeItemWidget(item);
-    delete item;
-    qDebug() << "gh" << item;
+    int row = ui->listWidget->row(item);
+    qDebug() << row;
+    ui->listWidget->takeItem(row);
+    jsonvalueList.removeAt(row);
   }
+
+  for(auto it : jsonvalueList)
+    qDebug() << it;
 
   ui->statusBar->showMessage("item deleted!");
 }
