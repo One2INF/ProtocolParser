@@ -1,4 +1,6 @@
-{
+﻿{
+  "HEADER_LENGTH" : 4,
+
   "AA11" :
   {
     ".SECTION":

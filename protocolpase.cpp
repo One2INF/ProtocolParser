@@ -281,7 +281,15 @@ ProtocolParseInterface::~ProtocolParseInterface()
 
 QList<QStringList> ProtocolParseInterface::Parse2List()
 {
-  QString strHeader = str.left(4);
+  if(jsonValue.toObject()["HEADER_LENGTH"].isDouble())
+  {
+    qDebug() << "invalid protocol config json!";
+    QList<QStringList> emptyList
+    return emptyList;
+  }
+
+  int iHeaderLength = static_cast<int>(jsonValue.toObject()["HEADER_LENGTH"].toDouble());
+  QString strHeader = str.left(iHeaderLength);
   QJsonValue jsonValueUnit= jsonValue.toObject()[strHeader];
 
   return parser->Parse2List(str, &jsonValueUnit);
