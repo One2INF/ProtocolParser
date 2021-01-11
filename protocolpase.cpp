@@ -29,19 +29,14 @@ typedef struct
 
 /* base class */
 ProtocolParser::ProtocolParser()
-{
-  qDebug() << "ProtocolPase Constructor";
-}
+{}
 
 ProtocolParser::~ProtocolParser()
-{
-  qDebug() << "ProtocolPase Destructor";
-}
+{}
 
 QList<QStringList> ProtocolParser::Parse2List(QString str, QJsonValue* jsonValue)
 {
   //TODO
-  qDebug() << "ProtocolPase none:" << str;
   (void)jsonValue;
   QList<QStringList> strArray;
   return strArray;
@@ -49,22 +44,15 @@ QList<QStringList> ProtocolParser::Parse2List(QString str, QJsonValue* jsonValue
 
 QJsonValue ProtocolParser::Parse2Json(QString str, QJsonValue *jsonValue)
 {
-  //TODO
-  qDebug() << "ProtocolPase none:" << str;
-
   return *jsonValue;
 }
 
 /* derived class */
 ProtocolPaser_CunKou::ProtocolPaser_CunKou()
-{
-  qDebug() << "ProtocolPase_CunKou Constructor";
-}
+{}
 
 ProtocolPaser_CunKou::~ProtocolPaser_CunKou()
-{
-  qDebug() << "ProtocolPase_CunKou Destructor";
-}
+{}
 
 QList<QStringList> ProtocolPaser_CunKou::Parse2List(QString str, QJsonValue* jsonValue)
 {
@@ -239,8 +227,6 @@ QList<QStringList> ProtocolPaserDefault::Parse2List(QString str, QJsonValue* jso
   (void)str;
   (void)jsonValue;
 
-  qDebug() << "Default Parser";
-
   QList<QStringList> strArray;
   return strArray;
 }
@@ -249,8 +235,6 @@ QJsonValue ProtocolPaserDefault::Parse2Json(QString str, QJsonValue *jsonValue)
 {
   (void)str;
   (void)jsonValue;
-
-  qDebug() << "Default Parser";
 
   QJsonValue jsonValueRet;
   return jsonValueRet;
@@ -265,14 +249,10 @@ ProtocolParseInterface::ProtocolParseInterface(QString str, QJsonValue* jsonValu
   this->jsonValue = jsonObj;
 
   parser = new ProtocolPaser_CunKou();
-//  parser = new ProtocolPaseDefault();
-
-  qDebug() << "ProtocolParseInterface Constructor";
 }
 
 ProtocolParseInterface::~ProtocolParseInterface()
 {
-  qDebug() << "ProtocolParseInterface Destructor";
   if(parser)
   {
     delete parser;
