@@ -1,5 +1,9 @@
-# ProtocolParser
+# ProtocolParser 
 
+一个好的工具应允许用户自定义 (Give us opportunity to draw with our amazing imagination)
+
+## 版本
+- QT5.15.2-MinGW64
 
 ## 软件截面
 
@@ -13,7 +17,7 @@
 - `model` 显示被解析的结果，若解析不成功会提示错误
 
 ![checkJson](./images/checkJson.PNG)
-- 在添加协议之前，可以使用 `File` -> `Check JSON` 检查格式是否正确，若正确会显示成树，`该项仅检查是否符合 QT 的 json 规范`
+- 在添加协议之前，可以使用 `File` -> `Check JSON` 检查格式是否正确，若正确会显示成树，`该项仅检查是否符合 QT 的 json 规范，可能会存在细微兼容性问题（比如最后一个 object 后不能存在多余的逗号）`
 
 ![jsonTree](./images/jsonTree.PNG)
 
@@ -85,7 +89,6 @@
   }
 }
 ```
-
 - `数据` 字段的长度依赖于 `功能码` 字段
 - 在 `字段长度` 一栏  天上所依赖的字段名
 - .REALATION: 未确定的字段名:{依赖的字段值:未确定的字段值}
@@ -99,9 +102,48 @@
 可以分成多个配置文件，添加进配置列表，避免一个配置文件过大；  
 只要配置文件足够多，就能解析任意报文。
 
+#### 添加 .NOTE
+有些字段某些数值有特殊意义，那我们就可以为此添加备注说明，十七更为含义更为直观。
+如下例子所示添加 `.NOTE` 字段。
+
+``` json
+{
+  "HEADER_LENGTH" : 4,
+
+  "AA19" :
+  {
+    ".SECTION":
+    [
+      ["HEAD", "报文头", 4],
+      ["MACHINECODE", "机器编号", 13],
+      ["M_SEQ", "机器流水号", 8],
+      ["TIME", "时间", 14],
+      ["COMM", "命令", 4],
+      ["USE_STATUS", "用户使用状态", 2],
+      ["DEV_STATUS", "设备状态", 2],
+      ["DOOR_STATUS", "门状态", 2],
+      ["SIM_SIGNAL", "信号强度", 2],
+      ["RUN_TIME", "运行时间(小时)", 5],
+      ["LOST_CONNECTTIME", "断网时间(分钟)", 3],
+      ["LOCAL_DATA_NUM", "本地数据数目", 3],
+      ["FOOTER", "报文尾", 4]
+    ],
+
+    ".NOTE":
+    {
+      "USE_STATUS":{"00":"空闲", "01":"APP 正在使用", "02":"正在上袋", "03":"正在"},
+      "DEV_STATUS":{"00":"正常", "01":"电机故障"},
+      "DOOR_STATUS":{"00":"门关", "01":"门开"}
+    }
+  }
+}
+```
+
+![Feature_NOTE](./images/Feature_NOTE.PNG)
+
 ## 说明
 - 程序未作严格数据安全处理
 
 ## TODO
-- 增加字段特殊数值的说明
+- 增加字段特殊数值的说明（已完成）
 - 增加网络功能，网络版 POST-MAN
