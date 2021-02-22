@@ -16,7 +16,8 @@ typedef enum
   IDX_FIELD_NAME = 0,
   IDX_FIELD_DESCRIPTION,
   IDX_FIELD_LENGTH,
-  IDX_FIELD_DATA
+  IDX_FIELD_DATA,
+  IDX_FIELD_NOTE
 }IDX_EN;
 
 typedef struct
@@ -25,6 +26,7 @@ typedef struct
   QString fieldDescription;
   double fieldLength;
   QString filedData;
+  QString filedNote;
 }SECTION_UNIT_ST;
 
 /* base class */
@@ -59,6 +61,7 @@ QList<QStringList> ProtocolPaser_CunKou::Parse2List(QString str, QJsonValue* jso
   QJsonObject jsonObj = jsonValue->toObject();
   QJsonArray sectionArray = jsonObj[".SECTION"].toArray();
   QJsonObject relationObject = jsonObj[".REALATION"].toObject();
+  QJsonObject noteObject = jsonObj[".NOTE"].toObject();
 
   /* for parsing: to facilitate the query */
   QJsonArray jsonArrayParsed;
@@ -121,6 +124,7 @@ QList<QStringList> ProtocolPaser_CunKou::Parse2List(QString str, QJsonValue* jso
     jsonObjParsed[unit.fieldName] = Array;
 
     Array.push_front(unit.fieldName);
+    Array.append(noteObject[unit.fieldName].toObject()[unit.filedData]);
     jsonArrayParsed.append(Array);
 
     str = str.right(str.size() - static_cast<int>(unit.fieldLength));
@@ -134,6 +138,7 @@ QList<QStringList> ProtocolPaser_CunKou::Parse2List(QString str, QJsonValue* jso
     QStringList strList;
     strList << jsonArray[IDX_FIELD_NAME].toString() << jsonArray[IDX_FIELD_DESCRIPTION].toString();
     strList << QString::number(jsonArray[IDX_FIELD_LENGTH].toDouble()) << jsonArray[IDX_FIELD_DATA].toString();
+    strList << jsonArray[IDX_FIELD_NOTE].toString();
     strArray << strList;
   }
 
