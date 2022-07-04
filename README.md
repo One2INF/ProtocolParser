@@ -5,9 +5,9 @@
 ## 版本
 - QT5.15.2-MinGW64
 
-## 软件截面
+## 软件截图
 
-![checkJson](./images/界面.PNG)
+![软件截图](images/界面.PNG)
 
 
 ## 使用说明
@@ -16,10 +16,10 @@
 - 文本框输入需要解析的协议，回车或点击 `Do` 解析
 - `model` 显示被解析的结果，若解析不成功会提示错误
 
-![checkJson](./images/checkJson.PNG)
+![checkJson](images/checkJson.PNG)
 - 在添加协议之前，可以使用 `File` -> `Check JSON` 检查格式是否正确，若正确会显示成树，`该项仅检查是否符合 QT 的 json 规范，可能会存在细微兼容性问题（比如最后一个 object 后不能存在多余的逗号）`
 
-![jsonTree](./images/jsonTree.PNG)
+![jsonTree](images/jsonTree.PNG)
 
 
 ### 基础应用
@@ -139,7 +139,7 @@
 }
 ```
 
-![Feature_NOTE](./images/Feature_NOTE.PNG)
+![Feature_NOTE](images/Feature_NOTE.PNG)
 
 ## 说明
 - 程序未作严格数据安全处理
